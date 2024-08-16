@@ -47,15 +47,16 @@ app.post("/add",async(req,res)=>{
   const publish_year=req.body.publish_year;
     try{
       const response = await axios.get(`https://openlibrary.org${key}.json`);
-      const result = response.data;
-      if(result.description){
-      await db.query("INSERT INTO books(cover_id,title,author,publish_year,description) VALUES ($1,$2,$3,$4,$5)",
+      const result = response.data;;
+      if(result.description||result.description!="undefined"){
+        
+      await db.query("INSERT INTO books(cover_id,title,author,publish_year,description) VALUES ($1,$2,$3,$4,$5);",
         [coverid,title,authorName,publish_year,result.description]);
       }else{
-        await db.query("INSERT INTO books(cover_id,title,author,publish_year,) VALUES ($1,$2,$3,$4)",
+        await db.query("INSERT INTO books(cover_id,title,author,publish_year,) VALUES ($1,$2,$3,$4);",
         [coverid,title,authorName,publish_year]);
       }
-      res.redirect("/myBooks");
+      res.redirect(`/info/${coverid}`);
       }catch(err){res.redirect(`/info/${coverid}`);}
 
 });
@@ -70,8 +71,8 @@ app.get("/mybooks",async(req,res)=>{
 });
 //                                            ############# show the choosen book info from the database ############
 app.get("/info/:id",async(req,res)=>{
-  const result = await db.query("SELECT * FROM books WHERE cover_id=$1",[req.params.id]);
-  const result2 = await db.query("SELECT * FROM notes WHERE cover_id=$1 ORDER BY id ASC",[req.params.id]);
+  const result = await db.query("SELECT * FROM books WHERE cover_id=$1;",[req.params.id]);
+  const result2 = await db.query("SELECT * FROM notes WHERE cover_id=$1 ORDER BY id ASC;",[req.params.id]);
   res.render("info.ejs",{details:result.rows[0],notes:result2.rows});
 })
 //                                            ############# add a note to a specific book in the database ############
