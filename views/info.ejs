@@ -7,8 +7,10 @@
         </div>
             <div class="col">
     <h4><%= details.title %></h4>
-    <p><%= details.author%>  <%= details.publish_year%></p>
+    <p>Author: <%= details.author%>  ,publish year: <%= details.publish_year%></p>
+    <% if(details.description!=null){ %>
     <p style="min-height: 200px;margin: 0;"><%= details.description.substring(0,details.description.split('Contains:')[0].split(/\s+/).slice(0,100).join(" ").length) %></p>
+    <% }else{ %><p style="min-height: 200px;margin: 0;"></p> <% } %>
     <h2>My Notes:</h2> 
     <!-- Button trigger modal -->
 <button id="create-node" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
