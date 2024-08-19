@@ -50,10 +50,10 @@ app.post("/add",async(req,res)=>{
       const result = response.data;;
       if(result.description||result.description!="undefined"){
         
-      await db.query("INSERT INTO books(cover_id,title,author,publish_year,description) VALUES ($1,$2,$3,$4,$5);",
+      await db.query("INSERT INTO books(cover_id,title,author,publish_year,description) VALUES ($1,$2,$3,$4,$5)",
         [coverid,title,authorName,publish_year,result.description]);
       }else{
-        await db.query("INSERT INTO books(cover_id,title,author,publish_year,) VALUES ($1,$2,$3,$4);",
+        await db.query("INSERT INTO books(cover_id,title,author,publish_year,) VALUES ($1,$2,$3,$4)",
         [coverid,title,authorName,publish_year]);
       }
       res.redirect(`/info/${coverid}`);
